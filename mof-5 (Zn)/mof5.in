@@ -1,0 +1,180 @@
+clear
+units real
+boundary p p p
+atom_style full
+box tilt large
+read_data mof5.data
+
+neighbor 2.0 bin
+
+
+# ------------------------ MOF-FF FORCE FIELD ------------------------------
+
+kspace_style ewald      1e-10
+pair_style buck6d/coul/gauss/long     0.9000     0.9000    12.0000
+
+pair_coeff     1     1           10856       3.2967033        308.7755       1.6022517      0.63272774    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn
+pair_coeff     1     2           10856       3.2967033        308.7755       1.6022517      0.63272774    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn
+pair_coeff     1     3       23480.015        2.919708       1383.9296       8.7719648      0.42457209    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn
+pair_coeff     1     4       10576.399       3.1914894       365.45138       2.5231391      0.61999948    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn
+pair_coeff     1     5       10576.399       3.1746032       377.27092       2.7176691      0.61999948    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn
+pair_coeff     1     6       10576.399       3.1746032       377.27092       2.7176691      0.61999948    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn
+pair_coeff     1     7       6320.6076       3.6144578       103.50278      0.44181916      0.75109952    # buck6d->(o4_zn4@zn4o)|mof5zn/gaussian->(o4_zn4@zn4o)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+pair_coeff     2     2           10856       3.2967033        308.7755       1.6022517      0.63272774    # buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn <--> buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn
+pair_coeff     2     3       23480.015        2.919708       1383.9296       8.7719648      0.42457209    # buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn <--> buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn
+pair_coeff     2     4       10576.399       3.1914894       365.45138       2.5231391      0.61999948    # buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn <--> buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn
+pair_coeff     2     5       10576.399       3.1746032       377.27092       2.7176691      0.61999948    # buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn <--> buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn
+pair_coeff     2     6       10576.399       3.1746032       377.27092       2.7176691      0.61999948    # buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn <--> buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn
+pair_coeff     2     7       6320.6076       3.6144578       103.50278      0.44181916      0.75109952    # buck6d->(o2_c1zn1@co2)|mof5zn/gaussian->(o2_c1zn1@co2)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+pair_coeff     3     3           50784       2.6200873       5731.7134        39.94184      0.34105377    # buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn <--> buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn
+pair_coeff     3     4       22875.278       2.8368794       1602.4086       13.124311      0.42066187    # buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn <--> buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn
+pair_coeff     3     5       22875.278       2.8235294       1648.4078        14.02027      0.42066187    # buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn <--> buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn
+pair_coeff     3     6       22875.278       2.8235294       1648.4078        14.02027      0.42066187    # buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn <--> buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn
+pair_coeff     3     7       13670.593       3.1662269       495.43572       2.8200727      0.45538243    # buck6d->(zn4_o4@zn4o)|mof5zn/gaussian->(zn4_o4@zn4o)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+pair_coeff     4     4           10304       3.0927835       429.89352       3.9170177      0.60800971    # buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn <--> buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn
+pair_coeff     4     5           10304       3.0769231       443.36171       4.2093581      0.60800971    # buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn <--> buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn
+pair_coeff     4     6           10304       3.0769231       443.36171       4.2093581      0.60800971    # buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn <--> buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn
+pair_coeff     4     7       6157.8178       3.4883721        124.7792      0.72632262      0.73006542    # buck6d->(c3_c1o2@co2)|mof5zn/gaussian->(c3_c1o2@co2)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+pair_coeff     5     5           10304       3.0612245       457.17971       4.5218516      0.60800971    # buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn <--> buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn
+pair_coeff     5     6           10304       3.0612245       457.17971       4.5218516      0.60800971    # buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn <--> buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn
+pair_coeff     5     7       6157.8178       3.4682081       129.19572      0.78772886      0.73006542    # buck6d->(c3_c2h1@ph)|mof5zn/gaussian->(c3_c2h1@ph)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+pair_coeff     6     6           10304       3.0612245       457.17971       4.5218516      0.60800971    # buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn <--> buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn
+pair_coeff     6     7       6157.8178       3.4682081       129.19572      0.78772886      0.73006542    # buck6d->(c3_c3@ph)|mof5zn/gaussian->(c3_c3@ph)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+pair_coeff     7     7            3680               4          32.805      0.10690769       0.9771554    # buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn <--> buck6d->(h1_c1@ph)|mof5zn/gaussian->(h1_c1@ph)|mof5zn
+
+bond_style hybrid class2 morse harmonic
+
+bond_coeff     7 class2     1.091624   379.193621  -966.943734  1438.328805    # mm3->(c3_c2h1@ph,h1_c1@ph)|mof5zn
+bond_coeff     2 class2     2.010752    75.003192  -191.258140   284.496484    # mm3->(o2_c1zn1@co2,zn4_o4@zn4o)|mof5zn
+bond_coeff     3 class2     1.292430   568.993272 -1450.932844  2158.262606    # mm3->(c3_c1o2@co2,o2_c1zn1@co2)|mof5zn
+bond_coeff     5 class2     1.392025   508.218180 -1295.956360  1927.735086    # mm3->(c3_c2h1@ph,c3_c2h1@ph)|mof5zn
+bond_coeff     1 class2     2.027483    68.074294  -173.589450   258.214307    # mm3->(o4_zn4@zn4o,zn4_o4@zn4o)|mof5zn
+bond_coeff     6 class2     1.415631   433.572818 -1105.610685  1644.595894    # mm3->(c3_c2h1@ph,c3_c3@ph)|mof5zn
+bond_coeff     4 class2     1.518206   264.589394  -674.702955  1003.620646    # mm3->(c3_c1o2@co2,c3_c3@ph)|mof5zn
+
+angle_style hybrid class2/p6 cosine/buck6d
+
+angle_coeff     9 class2/p6      116.604150    33.623802   -26.971027     6.181304    -4.427033     7.971867    # mm3->(c3_c3@ph,c3_c2h1@ph,h1_c1@ph)|mof5zn
+angle_coeff     9 class2/p6 bb     5.386377     1.415631     1.091624
+angle_coeff     9 class2/p6 ba    21.054235    29.621186     1.415631     1.091624
+angle_coeff     3 class2/p6      102.517039     0.001173    -0.000941     0.000216    -0.000154     0.000278    # mm3->(o2_c1zn1@co2,zn4_o4@zn4o,o4_zn4@zn4o)|mof5zn
+angle_coeff     3 class2/p6 bb     8.534409     2.010752     2.027483
+angle_coeff     3 class2/p6 ba    27.976535     7.655505     2.010752     2.027483
+angle_coeff    10 class2/p6      111.242640    77.355850   -62.050292    14.220879   -10.184955    18.340297    # mm3->(c3_c1o2@co2,c3_c3@ph,c3_c2h1@ph)|mof5zn
+angle_coeff    10 class2/p6 bb    29.106354     1.518206     1.415631
+angle_coeff    10 class2/p6 ba    44.953900    31.835515     1.518206     1.415631
+angle_coeff     4 class2/p6       96.578427     7.335348    -5.883983     1.348509    -0.965799     1.739137    # mm3->(o2_c1zn1@co2,zn4_o4@zn4o,o2_c1zn1@co2)|mof5zn
+angle_coeff     4 class2/p6 bb     8.927380     2.010752     2.010752
+angle_coeff     4 class2/p6 ba    14.656385    14.656385     2.010752     2.010752
+angle_coeff     2 class2/p6      117.549192    15.415188   -12.365153     2.833884    -2.029620     3.654787    # mm3->(c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o)|mof5zn
+angle_coeff     2 class2/p6 bb    33.460857     1.292430     2.010752
+angle_coeff     2 class2/p6 ba    23.721278    24.631033     1.292430     2.010752
+angle_coeff     7 class2/p6      118.406142    67.973018   -54.523939    12.495966    -8.949577    16.115722    # mm3->(c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph)|mof5zn
+angle_coeff     7 class2/p6 bb   106.869950     1.392025     1.415631
+angle_coeff     7 class2/p6 ba    86.661275    81.641544     1.392025     1.415631
+angle_coeff     8 class2/p6      120.620788    32.053586   -25.711492     5.892640    -4.220293     7.599584    # mm3->(c3_c2h1@ph,c3_c2h1@ph,h1_c1@ph)|mof5zn
+angle_coeff     8 class2/p6 bb     7.295268     1.392025     1.091624
+angle_coeff     8 class2/p6 ba    28.515799    24.016465     1.392025     1.091624
+angle_coeff    11 class2/p6      112.604771    85.545678   -68.619688    15.726474   -11.263257    20.282023    # mm3->(c3_c2h1@ph,c3_c3@ph,c3_c2h1@ph)|mof5zn
+angle_coeff    11 class2/p6 bb    98.446499     1.415631     1.415631
+angle_coeff    11 class2/p6 ba    91.879393    91.879393     1.415631     1.415631
+angle_coeff     5 class2/p6      120.266070   121.313400   -97.310441    22.301910   -15.972567    28.762192    # mm3->(o2_c1zn1@co2,c3_c1o2@co2,o2_c1zn1@co2)|mof5zn
+angle_coeff     5 class2/p6 bb   157.111983     1.292430     1.292430
+angle_coeff     5 class2/p6 ba    96.889864    96.889864     1.292430     1.292430
+angle_coeff     6 class2/p6      112.779294    88.538195   -71.020109    16.276610   -11.657263    20.991519    # mm3->(c3_c3@ph,c3_c1o2@co2,o2_c1zn1@co2)|mof5zn
+angle_coeff     6 class2/p6 bb    87.688391     1.518206     1.292430
+angle_coeff     6 class2/p6 ba    60.809071   102.919115     1.518206     1.292430
+angle_coeff     1 class2/p6      102.009119    13.150967   -10.548929     2.417636    -1.731505     3.117963    # mm3->(zn4_o4@zn4o,o4_zn4@zn4o,zn4_o4@zn4o)|mof5zn
+angle_coeff     1 class2/p6 bb    32.052902     2.027483     2.027483
+angle_coeff     1 class2/p6 ba   -13.254992   -13.254992     2.027483     2.027483
+
+dihedral_style hybrid opls class2
+
+dihedral_coeff     6 class2 bb13    -9.840032     1.292430     1.415631    # bb13->(o2_c1zn1@co2,c3_c1o2@co2,c3_c3@ph,c3_c2h1@ph)|mof5zn
+dihedral_coeff     6 class2     0.000000     0.000000     0.526748     0.000000     0.000000     0.000000    # class2->(o2_c1zn1@co2,c3_c1o2@co2,c3_c3@ph,c3_c2h1@ph)|mof5zn
+dihedral_coeff     6 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     6 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     6 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     6 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     8 class2 bb13     0.157610     1.415631     1.091624    # bb13->(c3_c3@ph,c3_c2h1@ph,c3_c2h1@ph,h1_c1@ph)|mof5zn
+dihedral_coeff     8 class2     0.000000     0.000000     3.649129     0.000000     0.000000     0.000000    # class2->(c3_c3@ph,c3_c2h1@ph,c3_c2h1@ph,h1_c1@ph)|mof5zn
+dihedral_coeff     8 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     8 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     8 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     8 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     7 class2 bb13   -68.905341     1.415631     1.415631    # bb13->(c3_c3@ph,c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph)|mof5zn
+dihedral_coeff     7 class2     0.000000     0.000000     3.565236     0.000000     0.000000     0.000000    # class2->(c3_c3@ph,c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph)|mof5zn
+dihedral_coeff     7 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     7 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     7 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     7 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff    12 class2 bb13    -8.241708     1.091624     1.518206    # bb13->(h1_c1@ph,c3_c2h1@ph,c3_c3@ph,c3_c1o2@co2)|mof5zn
+dihedral_coeff    12 class2     0.000000     0.000000     2.292046     0.000000     0.000000     0.000000    # class2->(h1_c1@ph,c3_c2h1@ph,c3_c3@ph,c3_c1o2@co2)|mof5zn
+dihedral_coeff    12 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    12 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    12 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    12 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     9 class2 bb13    -0.178016     1.091624     1.091624    # bb13->(h1_c1@ph,c3_c2h1@ph,c3_c2h1@ph,h1_c1@ph)|mof5zn
+dihedral_coeff     9 class2     0.000000     0.000000     2.093412     0.000000     0.000000     0.000000    # class2->(h1_c1@ph,c3_c2h1@ph,c3_c2h1@ph,h1_c1@ph)|mof5zn
+dihedral_coeff     9 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     9 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     9 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     9 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     1 class2 bb13    -1.751965     2.027483     2.010752    # bb13->(zn4_o4@zn4o,o4_zn4@zn4o,zn4_o4@zn4o,o2_c1zn1@co2)|mof5zn
+dihedral_coeff     1 class2     0.000000     0.000000     0.000000     0.000000     0.000000     0.000000    # class2->(zn4_o4@zn4o,o4_zn4@zn4o,zn4_o4@zn4o,o2_c1zn1@co2)|mof5zn
+dihedral_coeff     1 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     1 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     1 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     1 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff    13 class2 bb13    -2.059402     1.091624     1.415631    # bb13->(h1_c1@ph,c3_c2h1@ph,c3_c3@ph,c3_c2h1@ph)|mof5zn
+dihedral_coeff    13 class2     0.000000     0.000000     2.711353     0.000000     0.000000     0.000000    # class2->(h1_c1@ph,c3_c2h1@ph,c3_c3@ph,c3_c2h1@ph)|mof5zn
+dihedral_coeff    13 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    13 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    13 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    13 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     5 class2 bb13    -7.236229     1.518206     2.010752    # bb13->(c3_c3@ph,c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o)|mof5zn
+dihedral_coeff     5 class2     0.000000     0.000000     1.239168     0.000000     0.000000     0.000000    # class2->(c3_c3@ph,c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o)|mof5zn
+dihedral_coeff     5 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     5 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     5 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     5 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     2 class2 bb13   -13.015955     1.292430     2.027483    # bb13->(c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o,o4_zn4@zn4o)|mof5zn
+dihedral_coeff     2 class2     0.000000     0.000000     0.001253     0.000000     0.000000     0.000000    # class2->(c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o,o4_zn4@zn4o)|mof5zn
+dihedral_coeff     2 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     2 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     2 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     2 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     4 class2 bb13   -26.933617     1.292430     2.010752    # bb13->(o2_c1zn1@co2,c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o)|mof5zn
+dihedral_coeff     4 class2     0.000000     0.000000     0.016196     0.000000     0.000000     0.000000    # class2->(o2_c1zn1@co2,c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o)|mof5zn
+dihedral_coeff     4 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     4 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     4 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     4 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff     3 class2 bb13    -7.642028     1.292430     2.010752    # bb13->(c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o,o2_c1zn1@co2)|mof5zn
+dihedral_coeff     3 class2     0.000000     0.000000     0.000000     0.000000     0.000006     0.000000    # class2->(c3_c1o2@co2,o2_c1zn1@co2,zn4_o4@zn4o,o2_c1zn1@co2)|mof5zn
+dihedral_coeff     3 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     3 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     3 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff     3 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff    10 class2 bb13    -5.124337     1.392025     1.518206    # bb13->(c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph,c3_c1o2@co2)|mof5zn
+dihedral_coeff    10 class2     0.000000     0.000000     3.015494     0.000000     0.000000     0.000000    # class2->(c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph,c3_c1o2@co2)|mof5zn
+dihedral_coeff    10 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    10 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    10 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    10 class2 aat 0.0 0.0 0.0 # dummy
+dihedral_coeff    11 class2 bb13   -73.061814     1.392025     1.415631    # bb13->(c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph,c3_c2h1@ph)|mof5zn
+dihedral_coeff    11 class2     0.000000     0.000000     3.915053     0.000000     0.000000     0.000000    # class2->(c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph,c3_c2h1@ph)|mof5zn
+dihedral_coeff    11 class2 mbt 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    11 class2 ebt 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    11 class2 at  0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 # dummy
+dihedral_coeff    11 class2 aat 0.0 0.0 0.0 # dummy
+
+improper_style inversion/harmonic
+
+improper_coeff     1    42.808717     0.000000    # harm->(c3_c1o2@co2,c3_c3@ph,o2_c1zn1@co2,o2_c1zn1@co2)|mof5zn
+improper_coeff     2     4.680784     0.000000    # harm->(c3_c2h1@ph,c3_c2h1@ph,c3_c3@ph,h1_c1@ph)|mof5zn
+improper_coeff     3    14.432477     0.000000    # harm->(c3_c3@ph,c3_c1o2@co2,c3_c2h1@ph,c3_c2h1@ph)|mof5zn
+
+special_bonds lj 0.00 0.00 1.00 coul 1.00 1.00 1.00
+
+# ------------------------ MOF-FF FORCE FIELD END --------------------------
