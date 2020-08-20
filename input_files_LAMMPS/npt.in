@@ -1,0 +1,118 @@
+# LAMMPS input script for standardized atomistic simulations
+# Created by emc_setup.pl v0.8.1beta, August 1, 2015 as part of EMC
+# on Die Mai 10 16:51:22 CEST 2016
+
+clear
+
+# Variable definitions
+
+variable	project		index	mof5Zn	                                                # project name
+#variable	source		index	../build	                                        # source directory
+variable	params		index	/home/lv71091/wieser_s/1_MOFFF_lammps/params	# parameter directory
+variable	datafiles	index	/home/lv71091/wieser_s/1_MOFFF_lammps/datafiles
+variable	temperature	index	300		# system temperature
+variable	dielectric	index	1		# medium dielectric
+variable	precision	index	1e-10   	# kspace precision
+variable	lseed		index	723532		# langevin seed
+variable	vseed		index	1486221		# velocity init seed
+variable	tequil		index	10000	# equilibration time
+variable	trun		index	3000000  	# run time
+variable	dtrestart	index	10000        # delta restart time
+variable	dtdump		index	10000		# delta dump time
+variable	dtthermo	index	10		# delta thermo time
+variable	timestep	index	0.5		# integration time step
+variable	tfreq		index	1000		# profile sampling freq
+variable	nsample		index	1000		# profile conf sampling
+variable	dtime		equal	${tfreq}*${nsample}	# profile dtime
+
+# LAMMPS atomistic input script
+
+echo		screen
+units		real
+atom_style	full
+boundary 	p p p
+box tilt 	large
+
+
+
+
+
+# Interaction potential definition
+	
+read_data       mof5_222.data
+include		mof5_222.in 
+neighbor 2.0 bin
+kspace_style pppm 1.0e-5
+# Integration conditions (check)
+
+timestep	${timestep}
+
+
+# FORMAT output
+thermo_style custom step temp pe ke etotal press vol
+thermo_modify norm no # do not normalize by the number of atoms
+
+# TO RESATART
+#restart         ${dtrestart} restart.*.equil
+
+# Equilibration
+
+velocity        all create ${temperature} ${vseed} &
+                dist gaussian rot yes mom yes sum yes
+fix             1 all nve/limit 0.1
+fix             2 all langevin ${temperature} ${temperature} 100.0 ${lseed}
+thermo          ${dtthermo}  # how often is printed the output
+
+#dump NVEatoms all atom 10000 dump.atom
+#dump NVExyz all xyz 10000 dump.xyz
+#dump_modify NVExyz element O O Zn C C C H
+#dump vel all custom 1000 velocities.dat id type vx vy vz
+
+run             ${tequil}
+#############################################################################
+# NPT 
+
+unfix           1
+unfix           2
+#thermostat, barostat, drag to drag system back if it oscillates, the absolute values given are the time step intervals
+fix             mdnpt all npt temp  ${temperature} ${temperature} 100.0 iso 0.0 0.0 1000.0 drag 0.5
+variable xodim equal xlo
+variable xidim equal xhi
+variable xdim  equal  lx
+
+variable yodim equal ylo
+variable yidim equal yhi
+variable ydim  equal  ly
+
+variable zodim equal zlo
+variable zidim equal zhi
+variable zdim  equal  lz
+
+variable txy equal  xy
+variable txz equal  xz
+variable tyz equal  yz
+
+fix   nemdtp all ave/time 25 1000 25000 v_xdim v_ydim v_zdim v_txy v_txz v_tyz file cell.profile 
+
+fix dxo all print 100 "${xodim} ${xidim} ${xdim}" file x.dat screen no
+fix dyo all print 100 "${yodim} ${yidim} ${ydim}" file y.dat screen no
+fix dzo all print 100 "${zodim} ${zidim} ${zdim}" file z.dat screen no
+fix dti all print 100 "${txy} ${txz} ${tyz}"      file tilt.dat screen no
+
+#fix   nemdtp all ave/time 25 1 25 v_xdim v_ydim v_zdim v_txy v_txz v_tyz file cell.profile 
+#
+run             ${trun}
+#
+unfix           mdnpt 
+unfix dxo
+unfix dyo
+unfix dzo
+unfix dti
+#run             ${trun}
+
+#unfix           mdnpt 
+#unfix dxo
+#unfix dyo
+#unfix dzo
+#unfix dti
+

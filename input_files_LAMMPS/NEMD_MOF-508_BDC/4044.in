@@ -1,0 +1,195 @@
+# LAMMPS input script for standardized atomistic simulations
+# Created by emc_setup.pl v0.8.1beta, August 1, 2015 as part of EMC
+# on Die Mai 10 16:51:22 CEST 2016
+
+# Variable definitions
+
+variable	project		index	"bulk"	                                                # project name
+#variable	source		index	../build	                                        # source directory
+variable	params		index	/fhgfs/global/lv70818/natalia/BIPHENYL/lammps/build	# parameter directory
+variable	temperature	index	300		# system temperature
+variable	dielectric	index	1		# medium dielectric
+variable	cutoff		index	12		# standard cutoff
+variable	charge_cutoff	index	12		# charge cutoff
+variable	precision	index	0.000005		# kspace precision
+variable	lseed		index	723853		# langevin seed
+variable	vseed		index	1486234		# velocity init seed
+variable	tequil		index	500000		# equilibration time
+variable	trun		index	20000000  	# run time
+variable	dtrestart	index	300000        # delta restart time
+variable	dtdump		index	10000		# delta dump time
+variable	dtthermo	index	10000		# delta thermo time
+variable	timestep	index	0.5		# integration time step
+variable	tfreq		index	5		# profile sampling freq
+variable	nsample		index	1000		# profile conf sampling
+variable	dtime		equal	${tfreq}*${nsample}	# profile dtime
+
+# LAMMPS atomistic input script
+
+echo		screen
+units		real
+atom_style	full
+
+# Interaction potential definition
+	
+
+
+
+read_data	mof508_4044.data
+#read_restart    restart.dat
+include		mof508_4044.in
+# Integration conditions (check)
+
+timestep	${timestep}
+kspace_style	pppm ${precision}
+dielectric	${dielectric}
+
+thermo_style custom step temp pe ke etotal press vol
+thermo_modify norm no # do not normalize by the number of atoms
+thermo		${dtthermo}
+
+
+
+#parameters for thermal conductivity
+variable dbin  equal 41                  # lenght_cell_direction_kappa_calc/dbin   
+## optimum bin:
+##(61 -> 4055) (33-> 2055) (17-> 888)  x Biphenyl
+#
+variable idbin equal 1./(v_dbin-1.0)    # inverse of lenght_cell_direction_kappa_calc/dbin
+#
+print "x/n = ${idbin}"
+#
+#
+
+
+variable xodim equal xlo
+variable xidim equal xhi
+variable xdim  equal  lx
+variable dslabs equal v_xdim/v_dbin               #v_slabs
+variable cs1    equal (v_xodim+v_dslabs)/2.0            #v_dslabs/2.0+v_dslabs/4.0
+variable hs1    equal v_xodim+v_xdim/2.0-v_cs1          #v_cs1+v_dslabs-v_dslabs/4.0
+variable hs2    equal v_hs1+v_dslabs              #v_hs1+v_dslabs
+variable cs2    equal v_xidim-v_cs1
+#variable cs1    equal v_xdim*0.010111821773690487
+#variable hs1    equal v_xdim*0.4882565370724835
+#variable hs2    equal v_xdim*0.5107433026358809
+#variable cs2    equal v_xdim*0.9878286842250491
+#
+#
+print "regions under thermostat"
+#
+print "${cs1} ${hs1} ${hs2}"
+#
+#
+#
+#
+#
+region R11  block   INF    ${cs1} INF INF INF INF
+region R12  block   ${cs2} INF    INF INF INF INF
+region R2  block    ${hs1} ${hs2} INF INF INF INF
+#
+region R1 union 2 R11 R12
+#
+#
+group cold region R1
+group hot  region R2
+group rest subtract all cold hot
+#
+
+
+
+
+
+#Equilibration
+
+velocity	all create ${temperature} ${vseed} &
+		dist gaussian rot yes mom yes sum yes
+fix		1 all nve/limit 0.1
+fix		2 all langevin ${temperature} ${temperature} 100.0 ${lseed}
+
+restart ${tequil}  restart.*.equil
+
+
+run		${tequil}
+
+restart 0
+
+# Simulation
+
+
+unfix		1
+unfix           2
+reset_timestep 0
+
+restart ${dtrestart}  restart.*.equil
+
+
+#compute variable_name ...
+compute   ke all ke/atom
+variable  temp_atom atom c_ke/1.5
+thermo_style custom step temp pe ke etotal press lx ly lz vol
+thermo_modify norm no # do not normalize by the number of atoms
+
+dump            dnemd all xyz 100000 c_nemd.xyz
+dump_modify     dnemd sort id element C C C C C C H H N O Zn
+
+variable        kenergies atom c_ke
+#variable        temps atom c_temp_atom
+
+
+fix kins all ave/atom 10 1000 10000 c_ke
+dump            ekin all custom 10000 kine.dat id element x y z f_kins v_temp_atom
+dump_modify     ekin sort id element C C C C C C H H N O Zn
+################################
+#### calculation of T per zone##
+compute  kec cold temp
+compute  keh hot  temp
+compute  krest rest temp
+compute  kall  all temp
+
+variable  tempc equal c_kec
+variable  temph equal c_keh
+variable  temprest equal c_krest
+#################################
+#
+fix  MD all nve
+timestep        ${timestep}
+
+fix  NEQC cold langevin_verbose   250.0 250.0 200 452876 tally yes #zero  yes
+fix  NEQH hot  langevin_verbose   350.0 350.0 200 300054 tally yes #zero  yes
+
+fix_modify NEQC temp kec
+fix_modify NEQH temp keh
+
+variable t0     equal step
+variable tinit  equal ${t0}
+variable mytime equal step-${tinit}
+variable mytime_real equal (step-${tinit})*dt
+variable cross equal ly*lz
+
+
+variable exc equal f_NEQC
+variable exh equal f_NEQH
+
+#
+variable coldflux equal f_NEQC*0.50/dt/ly/lz 
+variable hotflux  equal f_NEQH*0.50/dt/ly/lz
+#variable coldflux equal f_NEQC*0.50/(step-${tinit})/dt/ly/lx 
+#variable hotflux  equal f_NEQH*0.50/(step-${tinit})/dt/ly/lx
+#
+fix xoxo all print 100 "${mytime} ${tempc} ${temph} ${temprest} " file T_control.dat screen no
+
+#fix   nemdtp all ave/spatial 10 1000 10000 x lower ${idbin} v_temp_atom file tmp_nemd.profile units reduced
+
+variable slabdist equal ${idbin}/5.0
+
+compute cc1 all chunk/atom bin/1d x lower ${slabdist} units reduced
+fix nemdtp all ave/chunk 10 1000 10000 cc1 v_temp_atom file tmp_nemd.profile #units reduced
+
+fix   dumpflux all ave/time 1 100 100  v_mytime v_mytime_real v_exc v_exh v_coldflux v_hotflux file "flux.dat" start 100
+#fix   dumpflux all print 500  "${mytime} ${mytime_real} ${exc} ${exh} ${coldflux} ${hotflux}" file "flux.dat" screen no
+
+
+
+run          ${trun}
+
